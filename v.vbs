@@ -1,39 +1,22 @@
-
-
-' v.vbs — harmless test script
+' v.vbs - minimal safe test
 Option Explicit
 
-On Error Resume Next
-
-Dim fso, logfile, nowTS, net, user, host, msg, ts
+Dim fso, base, logPath, okPath, ts
 Set fso = CreateObject("Scripting.FileSystemObject")
-Set net = CreateObject("WScript.Network")
 
-nowTS = Now
-user = net.UserName
-host = net.ComputerName
+' folder of this script
+base = Left(WScript.ScriptFullName, InStrRev(WScript.ScriptFullName, "\"))
 
-logfile = WScript.ScriptFullName
-logfile = Left(logfile, InStrRev(logfile, "\")) & "vbs_test.log"
+' log + marker files
+logPath = base & "vbs_test.log"
+okPath  = base & "vbs_ok.txt"
 
-msg = "[" & nowTS & "] v.vbs executed. User=" & user & " Host=" & host
-
-' Append a line to the log
-Set ts = fso.OpenTextFile(logfile, 8, True)
-ts.WriteLine msg
+' append one line to log
+Set ts = fso.OpenTextFile(logPath, 8, True)
+ts.WriteLine Now & " - v.vbs executed OK"
 ts.Close
 
-' Create a small marker file to show success (no UI)
-Dim markerPath
-markerPath = Left(logfile, Len(logfile) - Len("vbs_test.log")) & "vbs_ok.txt"
-If Err.Number = 0 Then
-  Dim m
-  Set m = fso.CreateTextFile(markerPath, True)
-  m.WriteLine "v.vbs ran successfully at " & nowTS
-  m.Close
-Else
-  Dim errf
-  Set errf = fso.OpenTextFile(logfile, 8, True)
-  errf.WriteLine "[" & Now & "] ERROR: " & Err.Number & " - " & Err.Description
-  errf.Close
-End If
+' write a small marker file
+Set ts = fso.CreateTextFile(okPath, True)
+ts.WriteLine "OK at " & Now
+ts.Close
